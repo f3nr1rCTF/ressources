@@ -2,6 +2,10 @@
 
 sudo apt install ccrypt exa grc tmux neovim
 
+git config --global user.email "w0lf15@protonmail.com"
+git config --global user.name "f3nr1rCTF"             
+
+
 cd /Documents
 mkdir htb
 cd htb
@@ -17,6 +21,7 @@ sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.
 cd .config
 mkdir nvim
 cd nvim
+cp /Documents/ressources/
 
 cd / 
 
