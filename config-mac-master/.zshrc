@@ -10,6 +10,21 @@ export ZSH="$HOME/.oh-my-zsh"
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="fino"
 
+# Vi->nvim if nvim installed
+if type nvim > /dev/null; then
+	export visual=nvim
+	export VIMCONFIG=~/.config/nvim
+	export VIMDATA=~/.local/share/nvim
+else
+	export VISUAL=vim
+fi
+
+export NVM_DIR="$HOME/.nvm"
+# This loads nvm
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+# This loads nvm bash_completion
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
 # a theme from this variable instead of looking in $ZSH/themes/
@@ -70,12 +85,18 @@ ZSH_THEME="fino"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git colorize grc zsh-autosuggestions zsh-syntax-highlighting tmux)
+plugins=(
+  git
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+  colorize
+  tmux
+)
+
 # colorize settings
 ZSH_COLORIZE_STYLE="colorful"
 
-# init tmux plugin to run on launch
-ZSH_TMUX_AUTOSTART=true
+
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -103,47 +124,33 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias nmap='grc nmap'
-alias cat='ccat'
-alias ls='exa -a --color=always --group-directories-first --icons' #my preferred listing
-alias la='exa -a --color=always --group-directories-first --icons'  # all files and dirs
-alias ll='exa -l --color=always --group-directories-first --icons'  # long format
-alias lt='exa -aT --color=always --group-directories-first --icons' # tree listing
-alias l.='exa -a --icons | egrep "^\."'
-alias urldecode='python -c "import sys, urllib as ul; print ul.unquote_plus(sys.argv[1])"'
-alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1])"'
-alias rustscan='docker run -it --rm --name rustscan rustscan/rustscan:1.10.0'
-alias server='python3 -m http.server'
-alias htbvpn='sudo openvpn /home/kali/Downloads/lab_f3nr1r.ovpn'
-alias htbrvpn='sudo openvpn /home/kali/Downloads/competitive_f3nr1r.ovpn'
-alias boxes='cd /home/kali/htb/boxes'
-alias b64='base64'
-alias b64d='base64 -d'
-eb64(){echo "${1}" | base64}
-eb64d(){echo "${1}" | base64 -d}
 
-alias php-reverse-shell="cp /usr/share/webshells/php/php-reverse-shell.php ."
-# Gobuster directory fuzzing
-# Usage: gobusterit <url>
-gobusterit() {
-    gobuster dir -u $1 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt | tee gobuster.txt
-}
-# Feroxbuster directory fuzzing
-# Usage: feroxbusterit <url>
-feroxbusterit() {
-    feroxbuster -u $1 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt | tee feroxbuster.txt
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+[[ -s $HOME/.nvm/nvm.sh ]] && . $HOME/.nvm/nvm.sh  # This loads NVM
+
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+function current_branch() {
+  ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+  echo ${ref#refs/heads/}
 }
 
-#alias vim to neovim
-alias vim='nvim'
+function current_repository() {
 
-alias cme='crackmapexec'
+  ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+  echo $(git remote -v | cut -d':' -f 2)
+}
+
 # vi->nvim if nvim installed
 if type "nvim" > /dev/null; then
 	alias vim='nvim'
 	alias vi='nvim'
 fi
 
+
+alias fullCheck="yarn test:ci --coverage && yarn lint --fix && yarn typecheck"
 alias add="git add -p ."
 alias adds="git add ."
 alias gst="git status"
@@ -171,3 +178,5 @@ alias lt='exa -aT --color=always --group-directories-first --icons' # tree listi
 alias l.='exa -a --icons | egrep "^\."'
 alias tml='tmux list-sessions'
 alias tmk='tmux kill-session -t'
+#alias vim to neovim
+alias vim='nvim'

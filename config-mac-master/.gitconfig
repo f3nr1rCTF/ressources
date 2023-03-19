@@ -1,0 +1,25 @@
+# This is Git's per-user configuration file.
+[user]
+# Please adapt and uncomment the following lines:
+	name = tweekdev
+	email = tja.theau54@gmail.com
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[pull]
+	rebase = true
+[alias]
+	wipa = !git add --all && git wip     
+	wip = !git commit -m "wip" 
+	pushf = !git push --force-with-lease     
+	ch = !git checkout     
+	br = !git branch --sort=-committerdate     
+	pushup = !git pushu 2>&1 | awk '/https/ {print $2}' | xargs xdg-open > /dev/null     
+	kill-branches = "!f() { git branch | awk '!/^*|master/ {print $1 }' | xargs git branch ${1--d};}; f"     
+	pushu = !git push -u origin `git rev-parse --abbrev-ref HEAD`
+[init]
+	defaultBranch = master
+[core]
+	excludesfile = /Users/theauantoine/.gitignore_global

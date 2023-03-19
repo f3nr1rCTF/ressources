@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =8
+let g:netrw_dirhist_8='/Users/theauantoine/.config/nvim'
+let g:netrw_dirhist_7='/Users/theauantoine/.config/nvim/pack'
+let g:netrw_dirhist_6='/Users/theauantoine/.config/nvim'
+let g:netrw_dirhist_5='/Users/theauantoine/.config'
+let g:netrw_dirhist_4='/Users/theauantoine'
+let g:netrw_dirhist_3='/Users/theauantoine/hemea/travauxlib/api/external-apis/src/alma'
+let g:netrw_dirhist_2='/Users/theauantoine/hemea/travauxlib/api/external-apis/src'
+let g:netrw_dirhist_1='/Users/theauantoine/hemea/travauxlib/api/external-apis'
+let g:netrw_dirhist_0='/Users/theauantoine/hemea/travauxlib/api'
+let g:netrw_dirhist_9='/Users/theauantoine/hemea/travauxlib'
