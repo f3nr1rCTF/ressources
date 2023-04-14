@@ -36,7 +36,7 @@ tmux send-keys "cd $HTB_DATA_DIR/$1; clear" Enter
 tmux send-keys -t htb:win3 "cd $HTB_DATA_DIR/$1; clear" Enter
 
 tmux select-window -t htb:vpn
-tmux send-keys -t htb:vpn "echo <SUDO_PASS>| sudo -S /usr/sbin/openvpn /home/kali/Documents/HTB/lab_f3nr1r.ovpn" Enter
+tmux send-keys -t htb:vpn "echo <SUDO_PASS>| sudo -S /usr/sbin/openvpn /home/kali/Documents/htb/lab_f3nr1r.ovpn" Enter
 tmux split-window -v
 tmux send-keys -t htb:vpn "cd $HTB_DATA_DIR/$1/www;/usr/bin/python3 -m http.server 8081" Enter
 
