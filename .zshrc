@@ -12,6 +12,21 @@ ZSH_THEME="fino"
 
 export TMUX_CONFIG="~/.config/tmux/tmux.conf"
 TMUX_SATUS_BAR=~/.config/tmux/TMUX_SATUS_BAR
+
+# Vi->nvim if nvim installed
+if type nvim > /dev/null; then
+	export visual=nvim
+	export VIMCONFIG=~/.config/nvim
+	export VIMDATA=~/.local/share/nvim
+else
+	export VISUAL=vim
+fi
+
+export NVM_DIR="$HOME/.nvm"
+# This loads nvm
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+# This loads nvm bash_completion
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
 # a theme from this variable instead of looking in $ZSH/themes/
@@ -105,6 +120,91 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+function current_branch() {
+  ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+  echo ${ref#refs/heads/}
+}
+
+function current_repository() {
+
+  ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+  echo $(git remote -v | cut -d':' -f 2)
+}
+
+# vi->nvim if nvim installed
+if type "nvim" > /dev/null; then
+	alias vim='nvim'
+	alias vi='nvim'
+fi
+
+alias fullCheck="yarn test:ci --coverage && yarn lint --fix && yarn typecheck"
+alias add="git add -p ."
+alias adds="git add ."
+alias gst="git status"
+alias gcm="git commit -m "
+alias push='git push -u origin $(current_branch)'
+alias master="git checkout master"
+alias masterp="git checkout master && git pull"
+alias develop="git checkout develop"
+alias developp="git checkout develop && git pull"
+alias branch="git checkout -b "
+alias gck="git checkout "
+alias gckm="git checkout -"
+alias pull="git pull"
+alias pjt="cd hemea/travauxlib"
+alias zshcode="code ~/.zshrc"
+alias deploy_pro="heroku pipelines:promote -a travauxlib-pro-staging"     
+alias deploy_api="heroku pipelines:promote -a travauxlib-api-staging"   
+alias deploy_app="heroku pipelines:promote -a travauxlib-app-staging"  
+alias deploy_admin="heroku pipelines:promote -a travauxlib-admin-staging"
+alias cat='ccat'
+alias ls='exa -a --color=always --group-directories-first --icons' #my preferred listing
+alias la='exa -a --color=always --group-directories-first --icons'  # all files and dirs
+alias ll='exa -l --color=always --group-directories-first --icons'  # long format
+alias lt='exa -aT --color=always --group-directories-first --icons' # tree listing
+alias l.='exa -a --icons | egrep "^\."'
+alias tml='tmux list-sessions'
+alias tmk='tmux kill-session -t'
+
+# Open file selected via fzf in vim
+function vimo() {
+	local fname
+	fname=$(fzf) || return
+	vim "$fname"
+}
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+
+# Archives
+function extract {
+  if [ -z "$1" ]; then
+    echo "Usage: extract <path/file_name>.<zip|rar|bz2|gz|tar|tbz2|tgz|Z|7z|xz|ex|tar.bz2|tar.gz|tar.xz>"
+  else
+    if [ -f $1 ]; then
+      case $1 in
+        *.tar.bz2)   tar xvjf $1    ;;
+        *.tar.gz)    tar xvzf $1    ;;
+        *.tar.xz)    tar xvJf $1    ;;
+        *.lzma)      unlzma $1      ;;
+        *.bz2)       bunzip2 $1     ;;
+        *.rar)       unrar x -ad $1 ;;
+        *.gz)        gunzip $1      ;;
+        *.tar)       tar xvf $1     ;;
+        *.tbz2)      tar xvjf $1    ;;
+        *.tgz)       tar xvzf $1    ;;
+        *.zip)       unzip $1       ;;
+        *.Z)         uncompress $1  ;;
+        *.7z)        7z x $1        ;;
+        *.xz)        unxz $1        ;;
+        *.exe)       cabextract $1  ;;
+        *)           echo "extract: '$1' - unknown archive method" ;;
+      esac
+    else
+      echo "$1 - file does not exist"
+    fi
+  fi
+}
 alias nmap='grc nmap'
 alias cat='ccat'
 alias ls='exa -a --color=always --group-directories-first --icons' #my preferred listing
@@ -146,33 +246,6 @@ if type "nvim" > /dev/null; then
 	alias vi='nvim'
 fi
 
-alias add="git add -p ."
-alias adds="git add ."
-alias gst="git status"
-alias gcm="git commit -m "
-alias push='git push -u origin $(current_branch)'
-alias master="git checkout master"
-alias masterp="git checkout master && git pull"
-alias develop="git checkout develop"
-alias developp="git checkout develop && git pull"
-alias branch="git checkout -b "
-alias gck="git checkout "
-alias gckm="git checkout -"
-alias pull="git pull"
-alias pjt="cd hemea/travauxlib"
-alias zshcode="code ~/.zshrc"
-alias deploy_pro="heroku pipelines:promote -a travauxlib-pro-staging"     
-alias deploy_api="heroku pipelines:promote -a travauxlib-api-staging"   
-alias deploy_app="heroku pipelines:promote -a travauxlib-app-staging"  
-alias deploy_admin="heroku pipelines:promote -a travauxlib-admin-staging"
-alias cat='ccat'
-alias ls='exa -a --color=always --group-directories-first --icons' #my preferred listing
-alias la='exa -a --color=always --group-directories-first --icons'  # all files and dirs
-alias ll='exa -l --color=always --group-directories-first --icons'  # long format
-alias lt='exa -aT --color=always --group-directories-first --icons' # tree listing
-alias l.='exa -a --icons | egrep "^\."'
-alias tml='tmux list-sessions'
-alias tmk='tmux kill-session -t'
 
 alias c='xclip -selection clipboard'
 
@@ -241,7 +314,7 @@ shell() {
 	if [[ $1 ]]; then
 		port=$1
 	else
-		port=9090
+		port=9001
 	fi
 
 	stty raw -echo; (echo 'python3 -c "import pty;pty.spawn(\"/bin/bash\")" || python -c "import pty;pty.spawn(\"/bin/bash\")"' ;echo "stty$(stty -a | awk -F ';' '{print $2 $3}' | head -n 1)"; echo reset;cat) | nc -lvnp $port && reset
