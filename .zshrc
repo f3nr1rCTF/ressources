@@ -212,10 +212,7 @@ alias la='exa -a --color=always --group-directories-first --icons'  # all files 
 alias ll='exa -l --color=always --group-directories-first --icons'  # long format
 alias lt='exa -aT --color=always --group-directories-first --icons' # tree listing
 alias l.='exa -a --icons | egrep "^\."'
-alias urldecode='python -c "import sys, urllib as ul; print ul.unquote_plus(sys.argv[1])"'
-alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1])"'
 alias rustscan='docker run -it --rm --name rustscan rustscan/rustscan:1.10.0'
-alias server='python3 -m http.server'
 alias htbvpn='sudo openvpn /home/kali/Downloads/lab_f3nr1r.ovpn'
 alias htbrvpn='sudo openvpn /home/kali/Downloads/competitive_f3nr1r.ovpn'
 alias boxes='cd /home/kali/htb/boxes'
