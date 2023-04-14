@@ -6,6 +6,18 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:
 
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
+git clone git@github.com:urbanadventurer/username-anarchy.git
+
+git clone git@github.com:r3motecontrol/Ghostpack-CompiledBinaries.git
+
+git clone git@github.com:Xyan1d3/SharpEvader.git
+
+git clone git@github.com:carlospolop/PEASS-ng.git
+
+git clone git@github.com:digininja/RSMangler.git
+
+git clone git@github.com:zrax/pycdc.git
+
 mkdir htb
 cd htb
 git clone git@github.com:f3nr1rCTF/boxes.git
